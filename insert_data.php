@@ -22,6 +22,9 @@
                 var roll=$("#roll").val();
                 var name=$("#name").val();
                 var avg=$("#avg").val();
+                if(roll.length==0||name.length==0||avg.length==0){
+                    $("#error-message").html("All Fields Are Required").slideDown();
+                }
                 $.ajax({
                     url:"ajax-insert-data.php",
                     type:"POST",
@@ -29,12 +32,30 @@
                     success:function(data){
                           if(data.trim()=="success"){
                               loadData();
+                              $("#addform").trigger("reset");
                           }
                           else{
                               alert("can't save the record");
                           }
                     }
                 })
+             })
+         })
+         $(document).on("click",".delete-btn",function(){
+             var roll= $(this).val();
+             $.ajax({
+                 url:"ajax-delete.php",
+                 type:"POST",
+                 data:{roll:roll},
+                 success:function(data){
+                    
+                     if(data.trim()=="success"){
+                         $("#r"+roll).fadeOut();
+                     }
+                     else{
+                         $("#error-messgae").html("can't delete record");
+                     }
+                 }
              })
          })
     </script>
@@ -48,10 +69,12 @@
        </tr>
        <tr>
           <td id="table-form">
-             Roll.No:<input type="text" id="roll">
-             Name:<input type="text" id="name">
-             Avg:<input type="text" id="avg">
-             <input type="button" value="insert-data" id="save-button">
+              <form id="addform">
+                    Roll.No:<input type="text" id="roll">
+                    Name:<input type="text" id="name">
+                    Avg:<input type="text" id="avg">
+                    <input type="button" value="insert-data" id="save-button">
+              </form>
           </td>
        </tr>
        <tr>
@@ -69,6 +92,7 @@
          </td>
        </tr>
     </table>
+    <div id="error-message"></div>
 </body>
 </html>
  
