@@ -1,7 +1,8 @@
 <?php
 $roll=$_POST["roll"];
 $conn=mysqli_connect("localhost","root","","java");
-if(mysqli_query($conn,"delete  from demo where sn=$roll")>0){
+$status=1;
+if(mysqli_query($conn,"update demo set status=$status where sn=$roll")>0){
     echo"success";
 }
 else{
