@@ -46,8 +46,20 @@
                               alert("can't save the record");
                           }
                     }
-                })
+                });
+             });
+             $("#Search").keyup(function(){
+                  var text=$(this).val();
+                  $.ajax({
+                      url:"ajax-live-search.php",
+                      type:"POST",
+                      data:{search:text},
+                      success:function(data){
+                          $("#table-data").html(data);
+                      }
+                  })
              })
+              
          });
          //delete the record
          $(document).on("click",".fa.fa-trash",function(){
@@ -101,6 +113,7 @@
                })
 
          });
+          
  
     </script>
 </head>
@@ -109,6 +122,8 @@
        <tr>
           <td id="header">
             <h1>PHP With Ajax</h1>
+            <label>Search:</label>
+            <input type="text" id="Search"autocomplete="off">
           </td>
        </tr>
        <tr>
