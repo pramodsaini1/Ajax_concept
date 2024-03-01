@@ -15,16 +15,35 @@
     <script>
          $(document).ready(function(){
             //get the record
-             function loadData(){
+            //  function loadData(){
+            //      $.ajax({
+            //           url:"ajax-load.php",
+            //           type:"POST",
+            //           success:function(data){
+            //               $("#table-data").html(data);
+            //           }
+            //      })
+            //  }
+            //  loadData();
+
+             //pagination concept
+             function loadTable(page){
                  $.ajax({
-                      url:"ajax-load.php",
-                      type:"POST",
-                      success:function(data){
-                          $("#table-data").html(data);
-                      }
-                 })
+                    url:"pagination.php",
+                    type:"POST",
+                    data:{page_no:page},
+                    success:function(data){
+                        $("#table-data").html(data);
+                    }
+                 });
              }
-             loadData();
+             loadTable();
+
+             $("#pagination a").click(function(e){
+                 e.preventDefault();
+                 var id=$(this).attr("id");
+                 
+             })
              //insert the record
              $("#save-button").click(function(){
                 var roll=$("#roll").val();
@@ -39,8 +58,9 @@
                     data:{roll:roll,name:name,avg:avg},
                     success:function(data){
                           if(data.trim()=="success"){
+                            $("#addform").trigger("reset");
                               loadData();
-                              $("#addform").trigger("reset");
+                               
                           }
                           else{
                               alert("can't save the record");
@@ -48,6 +68,7 @@
                     }
                 });
              });
+             // live search 
              $("#Search").keyup(function(){
                   var text=$(this).val();
                   $.ajax({
@@ -151,8 +172,13 @@
          </td>
        </tr>
     </table>
+    <div id="pagination">
+         <a class="active" id="1" href="">1</a>
+         <a id="2" href="">2</a>
+         <a href="3" href="">3</a>
+    </div>
     <div id="error-message"></div>
 </body>
 </html>
  
-<!-- <script type="text/javascript" src="js/jqueryjs"></script> -->
+<!-- <script type="text/javascript" src="js/jquery.js"></script> -->
