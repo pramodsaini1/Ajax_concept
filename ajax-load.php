@@ -1,9 +1,17 @@
 <?php
 $conn=mysqli_connect("localhost","root","","java");
 $status=0;
-$rs=mysqli_query($conn,"Select * from demo where status=$status");
+$id=0;
+
+if(isset($_POST["num"])){
+   $id=intval($_POST["num"]);
+} 
+$start=$id*3;
+$flag=0;
+$rs=mysqli_query($conn,"Select * from demo where status=$status LIMIT $start,3");
 echo"<table border='1' width='100%'> <tr><th width=100px>roll</th><th>Name</th><th>Avg</th><th width=100px>Edit</th><th width=100px>Delete</th></tr>";
 while($r=mysqli_fetch_array($rs)){
+  $flag++;
       ?>
         <tr id="r<?php echo $r[0]?>">
             <td><?php echo $r[0]?></td>
@@ -14,6 +22,13 @@ while($r=mysqli_fetch_array($rs)){
         </tr>
 
      <?php
+}
+if($flag==3){
+  ?>
+   <tr>
+    <td><button class="loadMore" id="<?php echo $id+1 ?>">Load More</button></td>
+   </tr>
+  <?php
 }
 echo"</table>";
 ?>

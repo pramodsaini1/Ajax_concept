@@ -14,36 +14,40 @@
     </style>
     <script>
          $(document).ready(function(){
-            //get the record
-            //  function loadData(){
-            //      $.ajax({
-            //           url:"ajax-load.php",
-            //           type:"POST",
-            //           success:function(data){
-            //               $("#table-data").html(data);
-            //           }
-            //      })
-            //  }
-            //  loadData();
+           // get the record
+           var num=0;
+             function loadData(){
+                  $.ajax({
+                      url:"ajax-load.php",
+                      type:"POST",
+                      data:{num:num},
+                       success:function(data){
+                          $("#table-data").html(data);
+                      }
+                 })
+             }
+             loadData();
+
+             
 
              //pagination concept
-             function loadTable(page){
-                 $.ajax({
-                    url:"pagination.php",
-                    type:"POST",
-                    data:{page_no:page},
-                    success:function(data){
-                        $("#table-data").html(data);
-                    }
-                 });
-             }
-             loadTable();
+            //  function loadTable(page){
+            //      $.ajax({
+            //         url:"pagination.php",
+            //         type:"POST",
+            //         data:{page_no:page},
+            //         success:function(data){
+            //             $("#table-data").html(data);
+            //         }
+            //      });
+            //  }
+            //  loadTable();
 
-             $("#pagination a").click(function(e){
-                 e.preventDefault();
-                 var id=$(this).attr("id");
+            //  $("#pagination a").click(function(e){
+            //      e.preventDefault();
+            //      var id=$(this).attr("id");
                  
-             })
+            //  })
              //insert the record
              $("#save-button").click(function(){
                 var roll=$("#roll").val();
@@ -82,6 +86,20 @@
              })
               
          });
+         //load more concept
+         $(document).on("click",".loadMore",function(){
+            var num=$(this).attr("id");
+            $(this).fadeOut(1000);
+            $.ajax({
+               url:"ajax-load.php",
+               type:"POST",
+               data:{num:num},
+               success:function(data){
+                   $("#table-data").append(data);
+               }
+
+            });
+         })
          //delete the record
          $(document).on("click",".fa.fa-trash",function(){
              var roll= $(this).attr("rel");
@@ -172,11 +190,11 @@
          </td>
        </tr>
     </table>
-    <div id="pagination">
+    <!-- <div id="pagination">
          <a class="active" id="1" href="">1</a>
          <a id="2" href="">2</a>
          <a href="3" href="">3</a>
-    </div>
+    </div> -->
     <div id="error-message"></div>
 </body>
 </html>
