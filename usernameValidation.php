@@ -16,26 +16,39 @@ $(document).ready(function(){
     $('#username').keyup(function() {
         var username = $(this).val().trim();
         var isValid = /^[a-zA-Z0-9](?!.*?_{4})[a-zA-Z0-9_]{2,28}[a-zA-Z0-9]$/.test(username);
-        var available="pramodsaini123";
-         var present=String(username);
-         if(isValid) {
-             if (available===present) {
-                $('#usernameError').html(' username  available');
-             }
-             else{
-                $('#usernameError').html(' username not available');
-             }
+          if(isValid) {
+               $(".btn.btn-primary").css("display","block");
+               $('#usernameError').text(' ');
         }
          else {
+            $(".btn.btn-primary").css("display","none");
             $('#usernameError').text('Username must be 4 to 16 characters long and can only contain letters, numbers, and underscores.');
         }
     });
 });
+$(document).on("click",".btn.btn-primary",function(){
+  var username=$("#username").val();
+  $.ajax({
+            url:"available.php",
+            type:"POST",
+            data:{username:username},
+            success:function(data){
+                 if(data=="available"){
+                  $('#usernameError').text("username already available");
+                }
+                else if(data=="created"){
+                  $('#usernameError').text("username created");
+                }
+            }
+          });
+})
+ 
 </script>
 </head>
 <body>
-        <label for="username">Username:</label>
+    <label for="username">Username:</label>
     <input type="text" id="username" name="username">
+    <button style="display:none;" class="btn btn-primary">Submit</button>
     <span id="usernameError" style="color: red;"></span>
    
 </body>
